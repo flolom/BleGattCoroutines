@@ -345,9 +345,9 @@ internal class GattConnectionImpl(
      * status is not success.
      */
     private fun <E> SendChannel<GattResponse<E>>.launchAndSendResponse(e: E, status: Int) {
-        launch {
-            send(GattResponse(e, status))
-        }
+//        launch {
+            sendBlocking(GattResponse(e, status))
+//        }
     }
 
     @Suppress("NOTHING_TO_INLINE")
