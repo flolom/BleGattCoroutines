@@ -23,6 +23,7 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.filter
 import kotlinx.coroutines.channels.first
+import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -276,7 +277,13 @@ internal class GattConnectionImpl(
         }
 
         override fun onCharacteristicChanged(gatt: BG, characteristic: BGC) {
-            launch { characteristicChangedChannel.send(characteristic) }
+            val newCharacteristic = BGC(
+                characteristic.uuid,
+                characteristic.properties,
+                characteristic.permissions
+            )
+            newCharacteristic.value = characteristic.value
+            characteristicChangedChannel.sendBlocking(newCharacteristic)
         }
 
         override fun onDescriptorRead(gatt: BG, descriptor: BGD, status: Int) {
