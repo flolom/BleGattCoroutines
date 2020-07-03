@@ -31,7 +31,7 @@ afterEvaluate {
         setupAllPublications(project)
     }
 
-    bintray {
-        setupPublicationsUpload(project, publishing, skipMetadataPublication = true)
-    }
+//    bintray {
+//        setupPublicationsUpload(project, publishing, skipMetadataPublication = true)
+//    }
 }

@@ -15,6 +15,7 @@ dependencies {
     implementation("com.android.tools.build:gradle:4.0.0")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+    implementation("com.github.dcendents:android-maven-gradle-plugin:2.1")
 }
 
 configurations.all {

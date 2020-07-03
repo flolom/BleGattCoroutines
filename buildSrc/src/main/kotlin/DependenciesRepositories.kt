@@ -2,23 +2,11 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.maven
 
 fun RepositoryHandler.setupForProject() {
-    jcenter()
 
     mavenCentral().ensureGroupsStartingWith("com.jakewharton.", "com.squareup.")
 
-    google().ensureGroups(
-        "com.google.gms",
-        "com.google.firebase",
-        "io.fabric.sdk.android",
-        "com.crashlytics.sdk.android",
-        "org.chromium.net"
-    ).ensureGroupsStartingWith(
-        "androidx.",
-        "com.android.",
-        "com.google.android.",
-        "com.google.ar",
-        "android.arch"
-    )
+    google()
+    jcenter()
 
     maven(url = "https://maven.fabric.io/public").ensureGroups("io.fabric.tools")
 

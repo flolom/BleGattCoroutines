@@ -1,9 +1,9 @@
 include(
-    ":core",
-    ":genericaccess",
-    ":sample-common",
-    ":sample-app-wear",
-    ":sample-app-mobile"
+    ":core"
+//    ":genericaccess",
+//    ":sample-common",
+//    ":sample-app-wear",
+//    ":sample-app-mobile"
 )
 
-enableFeaturePreview("GRADLE_METADATA")
+//enableFeaturePreview("GRADLE_METADATA")
