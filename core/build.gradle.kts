@@ -54,7 +54,13 @@ dependencies {
     implementation(Libs.splitties.lifecycleCoroutines)
     implementation(Libs.splitties.mainthread)
 }
-
+tasks.create<Jar>("sourcesJar") {
+    from(android.sourceSets.getByName("main").java.srcDirs)
+    archiveClassifier.set("sources")
+}
+artifacts {
+    archives(tasks.findByName("sourcesJar")!!)
+}
 afterEvaluate {
 //    publishing {
 //        setupAllPublications(project)
