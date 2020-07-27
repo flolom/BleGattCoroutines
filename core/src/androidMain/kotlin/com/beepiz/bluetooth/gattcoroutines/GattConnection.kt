@@ -46,6 +46,8 @@ interface GattConnection {
             connectionSettings: ConnectionSettings = ConnectionSettings()
         ): GattConnection = GattConnectionImpl(bluetoothDevice, connectionSettings)
 
+        var withCallbackLogs: Boolean = false
+
         /**
          * The characteristic used to enable notifications on the remote device in the
          * [setCharacteristicNotificationsEnabledOnRemoteDevice] function.
@@ -55,7 +57,6 @@ interface GattConnection {
          * - [Official Bluetooth website](https://www.bluetooth.com/specifications/gatt/descriptors/)
          * (look for `0x2902` or "Client Characteristic Configuration")
          */
-        @JvmField
         val clientCharacteristicConfiguration: UUID =
             UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     }

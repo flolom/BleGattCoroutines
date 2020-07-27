@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothProfile
 import android.os.Build.VERSION.SDK_INT
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.beepiz.bluetooth.gattcoroutines.GattConnection.Companion.clientCharacteristicConfiguration
 import com.beepiz.bluetooth.gattcoroutines.extensions.offerCatching
@@ -248,6 +249,9 @@ internal class GattConnectionImpl(
 
     private val callback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BG, status: Int, newState: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onConnectionStateChange, status: $status, newState:$newState")
+            }
             when (status) {
                 STATUS_SUCCESS -> isConnected = newState == BluetoothProfile.STATE_CONNECTED
             }
@@ -257,26 +261,44 @@ internal class GattConnectionImpl(
         }
 
         override fun onReadRemoteRssi(gatt: BG, rssi: Int, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onReadRemoteRssi, rssi: $rssi, status:$status")
+            }
             rssiChannel.launchAndSendResponse(rssi, status)
         }
 
         override fun onServicesDiscovered(gatt: BG, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onServicesDiscovered, status:$status")
+            }
             servicesDiscoveryChannel.launchAndSendResponse(gatt.services, status)
         }
 
         override fun onCharacteristicRead(gatt: BG, characteristic: BGC, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onCharacteristicRead, status:$status")
+            }
             readChannel.launchAndSendResponse(characteristic, status)
         }
 
         override fun onCharacteristicWrite(gatt: BG, characteristic: BGC, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onCharacteristicWrite, status:$status")
+            }
             writeChannel.launchAndSendResponse(characteristic, status)
         }
 
         override fun onReliableWriteCompleted(gatt: BG, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onReliableWriteCompleted, status:$status")
+            }
             reliableWriteChannel.launchAndSendResponse(Unit, status)
         }
 
         override fun onCharacteristicChanged(gatt: BG, characteristic: BGC) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onCharacteristicChanged")
+            }
             val newCharacteristic = BGC(
                 characteristic.uuid,
                 characteristic.properties,
@@ -287,18 +309,30 @@ internal class GattConnectionImpl(
         }
 
         override fun onDescriptorRead(gatt: BG, descriptor: BGD, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onDescriptorRead, status:$status")
+            }
             readDescChannel.launchAndSendResponse(descriptor, status)
         }
 
         override fun onDescriptorWrite(gatt: BG, descriptor: BGD, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onDescriptorWrite, status:$status")
+            }
             writeDescChannel.launchAndSendResponse(descriptor, status)
         }
 
         override fun onMtuChanged(gatt: BG, mtu: Int, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onMtuChanged, mtu:$mtu, status:$status")
+            }
             mtuChannel.launchAndSendResponse(mtu, status)
         }
 
         override fun onPhyRead(gatt: BG, txPhy: Int, rxPhy: Int, status: Int) {
+            if (GattConnection.withCallbackLogs) {
+                Log.d(TAG, "onPhyRead, txPhy:$txPhy, rxPhy:$rxPhy, status:$status")
+            }
             phyReadChannel.launchAndSendResponse(
                 GattConnection.Phy(
                     tx = txPhy,
@@ -370,5 +404,9 @@ internal class GattConnectionImpl(
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "GattConnectionImpl"
     }
 }
