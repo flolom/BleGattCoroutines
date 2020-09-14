@@ -187,6 +187,20 @@ internal class GattConnectionImpl(
         writeDescriptor(descriptor)
     }
 
+    override suspend fun setCharacteristicIndicationsEnabledOnRemoteDevice(characteristic: BGC, enable: Boolean) {
+        require(characteristic.properties.hasFlag(BGC.PROPERTY_INDICATE)) {
+            "This characteristic doesn't support indication or doesn't come from discoverServices()."
+        }
+        val descriptor: BGD? = characteristic.getDescriptor(clientCharacteristicConfiguration)
+        requireNotNull(descriptor) {
+            "This characteristic misses the client characteristic configuration descriptor."
+        }
+        descriptor.value = if (enable) {
+            BGD.ENABLE_INDICATION_VALUE
+        } else BGD.DISABLE_NOTIFICATION_VALUE
+        writeDescriptor(descriptor)
+    }
+
     override fun openNotificationSubscription(
         characteristic: BGC,
         disableNotificationsOnChannelClose: Boolean

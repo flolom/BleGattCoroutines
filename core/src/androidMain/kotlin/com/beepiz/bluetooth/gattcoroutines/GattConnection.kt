@@ -183,6 +183,11 @@ interface GattConnection {
         enable: Boolean
     )
 
+    suspend fun setCharacteristicIndicationsEnabledOnRemoteDevice(
+        characteristic: BGC,
+        enable: Boolean
+    )
+
     /**
      * This function requires that service discovery has been completed
      * for the given device.
